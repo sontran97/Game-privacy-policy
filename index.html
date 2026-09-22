@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Privacy Policy</title>
+<title>Privacy Policy &amp; Support</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -52,9 +52,18 @@
   }
   .lang button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   .lang button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tabs { display: flex; gap: 8px; margin: 0 0 20px; border-bottom: 1px solid var(--line); }
+  .tabs button {
+    font: inherit; font-size: 0.95rem; font-weight: 600; border: 0; background: transparent; color: var(--muted);
+    padding: 10px 4px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px 26px; }
   .summary { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; margin: 0 0 28px; }
   .summary p { margin: 0; }
+  .platform-badges { display: flex; gap: 8px; margin: 0 0 20px; flex-wrap: wrap; }
+  .badge { font-size: 0.8rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 4px 12px; }
   h2 { font-size: 1.2rem; margin: 34px 0 8px; line-height: 1.35; }
   h2:first-of-type { margin-top: 0; }
   h3 { font-size: 1rem; margin: 20px 0 4px; }
@@ -62,10 +71,14 @@
   ul { margin: 0 0 12px; padding-left: 22px; }
   li { margin-bottom: 6px; }
   a { color: var(--accent); }
+  .contact-box { background: var(--accent-soft); border-radius: 10px; padding: 18px 20px; margin: 12px 0; }
+  .contact-box a { font-weight: 600; }
+  section#support-page { display: none; }
+  html[data-page="support"] section#privacy-page { display: none; }
+  html[data-page="support"] section#support-page { display: block; }
   body [lang="en"], body [lang="vi"] { display: none; }
   html[data-lang="en"] body [lang="en"], html[data-lang="vi"] body [lang="vi"] { display: block; }
   html[data-lang="en"] body span[lang="en"], html[data-lang="vi"] body span[lang="vi"] { display: inline; }
-  
   footer { margin-top: 28px; color: var(--muted); font-size: 0.88rem; }
 </style>
 </head>
@@ -74,12 +87,16 @@
 
   <header class="top">
     <div>
-      <h1><span lang="en">Privacy Policy</span><span lang="vi">Chính sách bảo mật</span></h1>
+      <h1><span lang="en">Privacy Policy &amp; Support</span><span lang="vi">Chính sách bảo mật &amp; Hỗ trợ</span></h1>
       <p class="meta">
         <span data-f="game">[Game Name]</span> &middot;
         <span lang="en">Last updated:</span><span lang="vi">Cập nhật lần cuối:</span>
         <span data-f="date">[Date]</span>
       </p>
+      <div class="platform-badges">
+        <span class="badge">App Store (iOS)</span>
+        <span class="badge">Google Play (Android)</span>
+      </div>
     </div>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-set="en" aria-pressed="true">English</button>
@@ -87,40 +104,54 @@
     </div>
   </header>
 
+  <nav class="tabs" role="tablist" aria-label="Page">
+    <button type="button" data-page-set="privacy" role="tab" aria-selected="true">
+      <span lang="en">Privacy Policy</span><span lang="vi">Chính sách bảo mật</span>
+    </button>
+    <button type="button" data-page-set="support" role="tab" aria-selected="false">
+      <span lang="en">Support</span><span lang="vi">Hỗ trợ</span>
+    </button>
+  </nav>
+
   <main class="card">
+
+  <!-- ============================================================ -->
+  <!-- PRIVACY POLICY PAGE                                           -->
+  <!-- ============================================================ -->
+  <section id="privacy-page">
 
   <!-- ===================== ENGLISH ===================== -->
   <div lang="en">
-    <div class="summary"><p><strong>In short:</strong> <span data-f="game">[Game Name]</span> does not ask you to create an account and does not collect your name, email, or phone number. Purchases, Game Center and iCloud are handled by Apple. Third-party advertising partners may use limited device data to show ads, and only track you across other companies' apps and websites if you allow it.</p></div>
+    <div class="summary"><p><strong>In short:</strong> <span data-f="game">[Game Name]</span> does not ask you to create an account and does not collect your name, email, or phone number. Purchases, sign-in, and cloud save are handled by Apple (Game Center / iCloud) on iOS and by Google (Google Play Games Services / Google Play Billing) on Android. Third-party advertising partners may use limited device data to show ads, and only track you across other companies' apps and websites if you allow it.</p></div>
 
     <h2>1. Introduction</h2>
-    <p>This Privacy Policy explains how <span data-f="dev">[Developer Name]</span> ("we", "us", "our") handles information when you play <span data-f="game">[Game Name]</span> (the "Game") on iOS devices. By using the Game, you agree to the practices described here. If you do not agree, please stop using the Game.</p>
+    <p>This Privacy Policy explains how <span data-f="dev">[Developer Name]</span> ("we", "us", "our") handles information when you play <span data-f="game">[Game Name]</span> (the "Game") on iOS devices (via the App Store) and Android devices (via Google Play). By using the Game, you agree to the practices described here. If you do not agree, please stop using the Game.</p>
 
     <h2>2. Information we handle</h2>
 
-    <h3>Game Center</h3>
-    <p>If you are signed in to Apple Game Center, the Game may use your Game Center player alias and player ID to show leaderboards, record achievements, and submit scores. This data is provided and stored by Apple under the <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a>. We do not receive your Apple ID, real name, or email address.</p>
+    <h3>Sign-in and social features (Game Center / Google Play Games)</h3>
+    <p>If you are signed in to Apple Game Center (iOS) or Google Play Games Services (Android), the Game may use your player alias and player ID to show leaderboards, record achievements, and submit scores. This data is provided and stored by Apple or Google under their own privacy policies: <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>. We do not receive your Apple ID, Google Account email, real name, or password.</p>
 
-    <h3>iCloud</h3>
-    <p>The Game can save your progress and settings (for example level, score, currency, and preferences) to your personal iCloud account so you can keep playing across your devices and restore progress after reinstalling. This data is stored in your own iCloud storage, is managed by Apple, and is not accessible to us. You can turn this off at any time in <em>Settings &gt; [your name] &gt; iCloud</em>.</p>
+    <h3>Cloud save (iCloud / Google Play Games cloud save)</h3>
+    <p>The Game can save your progress and settings (for example level, score, currency, and preferences) to your personal iCloud account (iOS) or your Google Play Games cloud save / Android device backup (Android), so you can keep playing across devices and restore progress after reinstalling. This data is stored in your own Apple or Google account storage, is managed by Apple or Google, and is not accessible to us. You can turn this off in <em>Settings &gt; [your name] &gt; iCloud</em> on iOS, or in the Google Play Games app settings / <em>Settings &gt; Google &gt; Backup</em> on Android.</p>
 
     <h3>In-app purchases</h3>
-    <p>Purchases are processed entirely by Apple through the App Store. We do not see or store your payment card details, billing address, or Apple ID. We only receive confirmation from Apple that a purchase was completed so we can unlock the purchased item, and we may store that purchase status locally on your device or in iCloud so you can restore it.</p>
+    <p>Purchases are processed entirely by Apple through the App Store or by Google through Google Play Billing, depending on your device. We do not see or store your payment card details, billing address, Apple ID, or Google Account credentials. We only receive confirmation from Apple or Google that a purchase was completed so we can unlock the purchased item, and we may store that purchase status locally on your device or in your cloud save so you can restore it.</p>
 
     <h3>Advertising</h3>
     <p>The Game shows advertisements provided by third-party ad networks. To deliver, measure, and limit the frequency of ads, these partners may collect or receive:</p>
     <ul>
-      <li>Device identifiers, such as the Identifier for Advertisers (IDFA) if you grant permission, or the Identifier for Vendors (IDFV);</li>
+      <li>Device advertising identifiers, such as the Identifier for Advertisers (IDFA, iOS) if you grant permission, the Identifier for Vendors (IDFV, iOS), or the Android Advertising ID (AAID, Android);</li>
       <li>IP address and approximate location (derived from IP address, not precise GPS);</li>
-      <li>Device and app information (device model, iOS version, language, app version);</li>
+      <li>Device and app information (device model, OS version, language, app version);</li>
       <li>Ad interaction data (ads shown, viewed, or tapped) and other product interactions, such as video views;</li>
-      <li>Diagnostic and performance data (for example crash logs and app launch time), which is used to fix problems and to help measure and improve ads.</li>
+      <li>Diagnostic and performance data (for example crash logs and app launch time), used to fix problems and to help measure and improve ads.</li>
     </ul>
     <p>Our current ad partners and their privacy policies:</p>
     <ul id="ad-list-en"></ul>
 
     <h3>Information we do not collect</h3>
-    <p>We do not collect your name, email address, phone number, contacts, photos, precise location, or any sensitive personal information through the Game.</p>
+    <p>We do not collect your name, email address, phone number, contacts, photos, precise location, or any sensitive personal information through the Game, on either platform.</p>
 
     <h2>3. How we use information</h2>
     <ul>
@@ -130,26 +161,28 @@
       <li>To keep the Game secure, fix bugs, and improve gameplay.</li>
     </ul>
 
-    <h2>4. Consent and App Tracking Transparency</h2>
+    <h2>4. Consent and platform privacy controls</h2>
     <h3>Consent for ads (Google UMP)</h3>
-    <p>In the European Economic Area, the United Kingdom, and other places where the law requires it, the Game uses Google's User Messaging Platform (UMP) to ask for your consent before ads are personalized or before advertising identifiers are used. You can choose to accept, decline, or manage your options. Where the Game provides a privacy or consent settings option, you can review and change your choice at any time. Google's use of information is described in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps that use its services</a>.</p>
-    <h3>App Tracking Transparency (iOS)</h3>
-    <p>On iOS, the Game will ask for your permission before allowing advertising partners to track your activity across apps and websites owned by other companies. If you choose <em>Ask App Not to Track</em>, ads will still appear, but they will be less personalized and the IDFA will not be used. You can change your choice at any time in <em>Settings &gt; Privacy &amp; Security &gt; Tracking</em>. You can also limit ad personalization in the same menu under <em>Apple Advertising</em>.</p>
+    <p>In the European Economic Area, the United Kingdom, and other places where the law requires it, the Game uses Google's User Messaging Platform (UMP) to ask for your consent before ads are personalized or before advertising identifiers are used, on both iOS and Android. You can choose to accept, decline, or manage your options at any time from the Game's privacy settings, if available. Google's use of information is described in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps that use its services</a>.</p>
+    <h3>App Tracking Transparency (iOS only)</h3>
+    <p>On iOS, the Game will ask for your permission before allowing advertising partners to track your activity across apps and websites owned by other companies. If you choose <em>Ask App Not to Track</em>, ads will still appear, but they will be less personalized and the IDFA will not be used. You can change your choice at any time in <em>Settings &gt; Privacy &amp; Security &gt; Tracking</em>, and limit ad personalization under <em>Apple Advertising</em> in the same menu.</p>
+    <h3>Ads settings (Android only)</h3>
+    <p>On Android, you can reset or delete your Advertising ID, and opt out of interest-based ads, at any time in <em>Settings &gt; Privacy &gt; Ads</em> (or <em>Google &gt; Ads</em>, depending on Android version). This limits how ad partners can personalize ads shown in the Game.</p>
 
     <h2>5. Sharing of information</h2>
-    <p>We do not sell your personal information. Information is shared only with: (a) Apple, for Game Center, iCloud, and purchases; (b) advertising partners listed above, as described in Section 2; and (c) authorities, if we are required to do so by law.</p>
+    <p>We do not sell your personal information. Information is shared only with: (a) Apple and Google, for sign-in, cloud save, and purchases; (b) advertising partners listed above, as described in Section 2; and (c) authorities, if we are required to do so by law.</p>
 
     <h2>6. Data retention and deletion</h2>
-    <p>We do not keep your gameplay data on our own servers. Progress data lives on your device and in your iCloud account. To delete it, you can delete the Game from your device and remove its data under <em>Settings &gt; [your name] &gt; iCloud &gt; Manage Account Storage</em>. Game Center data can be managed through your Apple account at <a href="https://privacy.apple.com" target="_blank" rel="noopener">privacy.apple.com</a>. To reset advertising data, use the Tracking settings described above or contact the ad partners directly.</p>
+    <p>We do not keep your gameplay data on our own servers. Progress data lives on your device and in your iCloud or Google account. To delete it, uninstall the Game and remove its data under <em>Settings &gt; [your name] &gt; iCloud &gt; Manage Account Storage</em> (iOS) or <em>Settings &gt; Google &gt; Backup</em> / the Google Play Games app (Android). Game Center data can be managed at <a href="https://privacy.apple.com" target="_blank" rel="noopener">privacy.apple.com</a>; Google Play Games data can be managed at <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com</a>. To reset advertising data, use the settings described in Section 4 or contact the ad partners directly.</p>
 
     <h2>7. Children's privacy</h2>
-    <p>The Game is not directed to children under 13 (or under the minimum age required by law in your country), and we do not knowingly collect personal information from them. If you believe a child has provided us with personal information, please contact us and we will help resolve it. Parents can also use Apple's Screen Time and Ask to Buy features to control purchases and privacy settings.</p>
+    <p>The Game is not directed to children under 13 (or under the minimum age required by law in your country), and we do not knowingly collect personal information from them. If you believe a child has provided us with personal information, please contact us and we will help resolve it. Parents can use Apple's Screen Time / Ask to Buy, or Google Play's Family Link and parental controls, to manage purchases and privacy settings.</p>
 
     <h2>8. Your rights</h2>
-    <p>Depending on where you live (for example the EU/EEA, UK, or California), you may have rights to access, correct, delete, or restrict the use of your personal information, to object to certain processing, and to opt out of the "sale" or "sharing" of data for targeted advertising. Because we do not hold your personal data ourselves, most of these controls are available through your device settings, your Apple account, and the privacy tools of our ad partners. You can also contact us using the details below.</p>
+    <p>Depending on where you live (for example the EU/EEA, UK, or California), you may have rights to access, correct, delete, or restrict the use of your personal information, to object to certain processing, and to opt out of the "sale" or "sharing" of data for targeted advertising. Because we do not hold your personal data ourselves, most of these controls are available through your device settings, your Apple or Google account, and the privacy tools of our ad partners. You can also contact us using the details in the Support tab.</p>
 
     <h2>9. Security</h2>
-    <p>We rely on Apple's platform security for data stored in iCloud and Game Center, and we choose reputable partners for advertising. No method of storage or transmission is completely secure, so we cannot guarantee absolute security.</p>
+    <p>We rely on Apple's and Google's platform security for data stored in iCloud, Game Center, and Google Play Games, and we choose reputable partners for advertising. No method of storage or transmission is completely secure, so we cannot guarantee absolute security.</p>
 
     <h2>10. International use</h2>
     <p>Our partners may process data in countries other than your own. Where required, they use safeguards such as standard contractual clauses.</p>
@@ -163,28 +196,28 @@
 
   <!-- ===================== TIẾNG VIỆT ===================== -->
   <div lang="vi">
-    <div class="summary"><p><strong>Tóm tắt:</strong> <span data-f="game">[Game Name]</span> không yêu cầu bạn tạo tài khoản và không thu thập tên, email hay số điện thoại của bạn. Việc mua hàng, Game Center và iCloud do Apple xử lý. Các đối tác quảng cáo bên thứ ba có thể dùng một số dữ liệu thiết bị hạn chế để hiển thị quảng cáo, và chỉ theo dõi bạn giữa các ứng dụng, website của công ty khác khi bạn cho phép.</p></div>
+    <div class="summary"><p><strong>Tóm tắt:</strong> <span data-f="game">[Game Name]</span> không yêu cầu bạn tạo tài khoản và không thu thập tên, email hay số điện thoại của bạn. Việc mua hàng, đăng nhập và lưu trữ đám mây do Apple xử lý (Game Center / iCloud) trên iOS và do Google xử lý (Google Play Games Services / Google Play Billing) trên Android. Các đối tác quảng cáo bên thứ ba có thể dùng một số dữ liệu thiết bị hạn chế để hiển thị quảng cáo, và chỉ theo dõi bạn giữa các ứng dụng, website của công ty khác khi bạn cho phép.</p></div>
 
     <h2>1. Giới thiệu</h2>
-    <p>Chính sách bảo mật này giải thích cách <span data-f="dev">[Developer Name]</span> ("chúng tôi") xử lý thông tin khi bạn chơi <span data-f="game">[Game Name]</span> ("Game") trên thiết bị iOS. Khi sử dụng Game, bạn đồng ý với những nội dung được nêu trong chính sách này. Nếu không đồng ý, vui lòng ngừng sử dụng Game.</p>
+    <p>Chính sách bảo mật này giải thích cách <span data-f="dev">[Developer Name]</span> ("chúng tôi") xử lý thông tin khi bạn chơi <span data-f="game">[Game Name]</span> ("Game") trên thiết bị iOS (qua App Store) và thiết bị Android (qua Google Play). Khi sử dụng Game, bạn đồng ý với những nội dung được nêu trong chính sách này. Nếu không đồng ý, vui lòng ngừng sử dụng Game.</p>
 
     <h2>2. Thông tin chúng tôi xử lý</h2>
 
-    <h3>Game Center</h3>
-    <p>Nếu bạn đã đăng nhập Apple Game Center, Game có thể sử dụng biệt danh và ID người chơi Game Center để hiển thị bảng xếp hạng, ghi nhận thành tựu và gửi điểm số. Dữ liệu này do Apple cung cấp và lưu trữ theo <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Chính sách quyền riêng tư của Apple</a>. Chúng tôi không nhận được Apple ID, họ tên thật hay email của bạn.</p>
+    <h3>Đăng nhập và tính năng xã hội (Game Center / Google Play Games)</h3>
+    <p>Nếu bạn đã đăng nhập Apple Game Center (iOS) hoặc Google Play Games Services (Android), Game có thể sử dụng biệt danh và ID người chơi để hiển thị bảng xếp hạng, ghi nhận thành tựu và gửi điểm số. Dữ liệu này do Apple hoặc Google cung cấp và lưu trữ theo chính sách riêng của họ: <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Chính sách quyền riêng tư của Apple</a> và <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Chính sách quyền riêng tư của Google</a>. Chúng tôi không nhận được Apple ID, email tài khoản Google, họ tên thật hay mật khẩu của bạn.</p>
 
-    <h3>iCloud</h3>
-    <p>Game có thể lưu tiến trình và cài đặt của bạn (ví dụ: màn chơi, điểm số, tiền tệ trong game, tùy chọn) vào tài khoản iCloud cá nhân để bạn tiếp tục chơi trên nhiều thiết bị và khôi phục tiến trình sau khi cài lại. Dữ liệu này nằm trong dung lượng iCloud của chính bạn, do Apple quản lý và chúng tôi không thể truy cập. Bạn có thể tắt bất cứ lúc nào tại <em>Cài đặt &gt; [tên của bạn] &gt; iCloud</em>.</p>
+    <h3>Lưu trữ đám mây (iCloud / Google Play Games cloud save)</h3>
+    <p>Game có thể lưu tiến trình và cài đặt của bạn (ví dụ: màn chơi, điểm số, tiền tệ trong game, tùy chọn) vào tài khoản iCloud cá nhân (iOS) hoặc lưu trữ đám mây Google Play Games / sao lưu thiết bị Android (Android), để bạn tiếp tục chơi trên nhiều thiết bị và khôi phục tiến trình sau khi cài lại. Dữ liệu này nằm trong dung lượng tài khoản Apple hoặc Google của chính bạn, do Apple hoặc Google quản lý và chúng tôi không thể truy cập. Bạn có thể tắt tại <em>Cài đặt &gt; [tên của bạn] &gt; iCloud</em> trên iOS, hoặc trong cài đặt ứng dụng Google Play Games / <em>Cài đặt &gt; Google &gt; Sao lưu</em> trên Android.</p>
 
     <h3>Mua hàng trong ứng dụng</h3>
-    <p>Mọi giao dịch mua hàng được Apple xử lý hoàn toàn thông qua App Store. Chúng tôi không nhìn thấy hay lưu thông tin thẻ thanh toán, địa chỉ thanh toán hoặc Apple ID của bạn. Chúng tôi chỉ nhận xác nhận từ Apple rằng giao dịch đã hoàn tất để mở khóa vật phẩm, và có thể lưu trạng thái mua hàng đó trên thiết bị hoặc trong iCloud của bạn để bạn khôi phục sau này.</p>
+    <p>Mọi giao dịch mua hàng được Apple xử lý qua App Store hoặc Google xử lý qua Google Play Billing, tùy thiết bị của bạn. Chúng tôi không nhìn thấy hay lưu thông tin thẻ thanh toán, địa chỉ thanh toán, Apple ID hay thông tin đăng nhập tài khoản Google của bạn. Chúng tôi chỉ nhận xác nhận từ Apple hoặc Google rằng giao dịch đã hoàn tất để mở khóa vật phẩm, và có thể lưu trạng thái mua hàng đó trên thiết bị hoặc trong dữ liệu lưu đám mây của bạn để khôi phục sau này.</p>
 
     <h3>Quảng cáo</h3>
     <p>Game hiển thị quảng cáo do các mạng quảng cáo bên thứ ba cung cấp. Để phân phối, đo lường và giới hạn tần suất quảng cáo, các đối tác này có thể thu thập hoặc nhận:</p>
     <ul>
-      <li>Mã định danh thiết bị, như Identifier for Advertisers (IDFA) nếu bạn cấp quyền, hoặc Identifier for Vendors (IDFV);</li>
+      <li>Mã định danh quảng cáo của thiết bị, như Identifier for Advertisers (IDFA, iOS) nếu bạn cấp quyền, Identifier for Vendors (IDFV, iOS), hoặc Android Advertising ID (AAID, Android);</li>
       <li>Địa chỉ IP và vị trí tương đối (suy ra từ IP, không phải GPS chính xác);</li>
-      <li>Thông tin thiết bị và ứng dụng (kiểu máy, phiên bản iOS, ngôn ngữ, phiên bản app);</li>
+      <li>Thông tin thiết bị và ứng dụng (kiểu máy, phiên bản hệ điều hành, ngôn ngữ, phiên bản app);</li>
       <li>Dữ liệu tương tác với quảng cáo (quảng cáo đã hiển thị, đã xem, đã nhấn) và các tương tác khác với sản phẩm, như lượt xem video;</li>
       <li>Dữ liệu chẩn đoán và hiệu năng (ví dụ nhật ký sự cố, thời gian khởi động app), dùng để sửa lỗi và giúp đo lường, cải thiện quảng cáo.</li>
     </ul>
@@ -192,7 +225,7 @@
     <ul id="ad-list-vi"></ul>
 
     <h3>Thông tin chúng tôi không thu thập</h3>
-    <p>Thông qua Game, chúng tôi không thu thập họ tên, email, số điện thoại, danh bạ, ảnh, vị trí chính xác hay bất kỳ thông tin cá nhân nhạy cảm nào của bạn.</p>
+    <p>Thông qua Game, trên cả hai nền tảng, chúng tôi không thu thập họ tên, email, số điện thoại, danh bạ, ảnh, vị trí chính xác hay bất kỳ thông tin cá nhân nhạy cảm nào của bạn.</p>
 
     <h2>3. Mục đích sử dụng thông tin</h2>
     <ul>
@@ -202,26 +235,28 @@
       <li>Giữ an toàn cho Game, sửa lỗi và cải thiện trải nghiệm chơi.</li>
     </ul>
 
-    <h2>4. Sự đồng ý và App Tracking Transparency</h2>
+    <h2>4. Sự đồng ý và các tùy chọn quyền riêng tư trên từng nền tảng</h2>
     <h3>Đồng ý về quảng cáo (Google UMP)</h3>
-    <p>Tại Khu vực kinh tế châu Âu (EEA), Vương quốc Anh và những nơi pháp luật yêu cầu, Game sử dụng User Messaging Platform (UMP) của Google để xin sự đồng ý của bạn trước khi cá nhân hóa quảng cáo hoặc sử dụng mã định danh quảng cáo. Bạn có thể chấp nhận, từ chối hoặc tùy chỉnh lựa chọn. Khi Game có mục cài đặt quyền riêng tư hoặc sự đồng ý, bạn có thể xem lại và thay đổi lựa chọn bất cứ lúc nào. Cách Google sử dụng thông tin được mô tả tại <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps that use its services</a>.</p>
-    <h3>App Tracking Transparency (iOS)</h3>
-    <p>Trên iOS, Game sẽ xin phép bạn trước khi cho phép đối tác quảng cáo theo dõi hoạt động của bạn trên các ứng dụng và website của công ty khác. Nếu bạn chọn <em>Yêu cầu ứng dụng không theo dõi</em>, quảng cáo vẫn xuất hiện nhưng ít được cá nhân hóa hơn và IDFA sẽ không được sử dụng. Bạn có thể thay đổi lựa chọn bất cứ lúc nào tại <em>Cài đặt &gt; Quyền riêng tư &amp; Bảo mật &gt; Theo dõi</em>. Bạn cũng có thể hạn chế cá nhân hóa quảng cáo trong mục <em>Quảng cáo của Apple</em> ở cùng khu vực cài đặt.</p>
+    <p>Tại Khu vực kinh tế châu Âu (EEA), Vương quốc Anh và những nơi pháp luật yêu cầu, Game sử dụng User Messaging Platform (UMP) của Google để xin sự đồng ý của bạn trước khi cá nhân hóa quảng cáo hoặc sử dụng mã định danh quảng cáo, trên cả iOS và Android. Bạn có thể chấp nhận, từ chối hoặc tùy chỉnh lựa chọn bất cứ lúc nào từ mục cài đặt quyền riêng tư của Game, nếu có. Cách Google sử dụng thông tin được mô tả tại <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps that use its services</a>.</p>
+    <h3>App Tracking Transparency (chỉ trên iOS)</h3>
+    <p>Trên iOS, Game sẽ xin phép bạn trước khi cho phép đối tác quảng cáo theo dõi hoạt động của bạn trên các ứng dụng và website của công ty khác. Nếu bạn chọn <em>Yêu cầu ứng dụng không theo dõi</em>, quảng cáo vẫn xuất hiện nhưng ít được cá nhân hóa hơn và IDFA sẽ không được sử dụng. Bạn có thể thay đổi lựa chọn tại <em>Cài đặt &gt; Quyền riêng tư &amp; Bảo mật &gt; Theo dõi</em>, và hạn chế cá nhân hóa quảng cáo trong mục <em>Quảng cáo của Apple</em> ở cùng khu vực cài đặt.</p>
+    <h3>Cài đặt quảng cáo (chỉ trên Android)</h3>
+    <p>Trên Android, bạn có thể đặt lại hoặc xóa Mã quảng cáo (Advertising ID) và từ chối quảng cáo theo sở thích bất cứ lúc nào tại <em>Cài đặt &gt; Quyền riêng tư &gt; Quảng cáo</em> (hoặc <em>Google &gt; Quảng cáo</em>, tùy phiên bản Android). Việc này hạn chế khả năng cá nhân hóa quảng cáo hiển thị trong Game.</p>
 
     <h2>5. Chia sẻ thông tin</h2>
-    <p>Chúng tôi không bán thông tin cá nhân của bạn. Thông tin chỉ được chia sẻ với: (a) Apple, cho Game Center, iCloud và mua hàng; (b) các đối tác quảng cáo nêu trên, như mô tả ở Mục 2; và (c) cơ quan có thẩm quyền, nếu pháp luật yêu cầu.</p>
+    <p>Chúng tôi không bán thông tin cá nhân của bạn. Thông tin chỉ được chia sẻ với: (a) Apple và Google, cho việc đăng nhập, lưu trữ đám mây và mua hàng; (b) các đối tác quảng cáo nêu trên, như mô tả ở Mục 2; và (c) cơ quan có thẩm quyền, nếu pháp luật yêu cầu.</p>
 
     <h2>6. Lưu trữ và xóa dữ liệu</h2>
-    <p>Chúng tôi không lưu dữ liệu chơi game của bạn trên máy chủ riêng. Dữ liệu tiến trình nằm trên thiết bị và trong tài khoản iCloud của bạn. Để xóa, bạn có thể gỡ Game khỏi thiết bị và xóa dữ liệu của Game tại <em>Cài đặt &gt; [tên của bạn] &gt; iCloud &gt; Quản lý dung lượng tài khoản</em>. Dữ liệu Game Center có thể được quản lý qua tài khoản Apple tại <a href="https://privacy.apple.com" target="_blank" rel="noopener">privacy.apple.com</a>. Để đặt lại dữ liệu quảng cáo, hãy dùng mục Theo dõi như trên hoặc liên hệ trực tiếp với đối tác quảng cáo.</p>
+    <p>Chúng tôi không lưu dữ liệu chơi game của bạn trên máy chủ riêng. Dữ liệu tiến trình nằm trên thiết bị và trong tài khoản iCloud hoặc Google của bạn. Để xóa, hãy gỡ Game khỏi thiết bị và xóa dữ liệu tại <em>Cài đặt &gt; [tên của bạn] &gt; iCloud &gt; Quản lý dung lượng tài khoản</em> (iOS) hoặc <em>Cài đặt &gt; Google &gt; Sao lưu</em> / ứng dụng Google Play Games (Android). Dữ liệu Game Center có thể quản lý tại <a href="https://privacy.apple.com" target="_blank" rel="noopener">privacy.apple.com</a>; dữ liệu Google Play Games có thể quản lý tại <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com</a>. Để đặt lại dữ liệu quảng cáo, hãy dùng cài đặt ở Mục 4 hoặc liên hệ trực tiếp với đối tác quảng cáo.</p>
 
     <h2>7. Quyền riêng tư của trẻ em</h2>
-    <p>Game không hướng đến trẻ em dưới 13 tuổi (hoặc dưới độ tuổi tối thiểu theo luật tại quốc gia của bạn) và chúng tôi không cố ý thu thập thông tin cá nhân của các em. Nếu bạn cho rằng một trẻ em đã cung cấp thông tin cá nhân cho chúng tôi, vui lòng liên hệ để được hỗ trợ xử lý. Phụ huynh cũng có thể dùng Thời gian sử dụng và Yêu cầu mua hàng của Apple để kiểm soát giao dịch và quyền riêng tư.</p>
+    <p>Game không hướng đến trẻ em dưới 13 tuổi (hoặc dưới độ tuổi tối thiểu theo luật tại quốc gia của bạn) và chúng tôi không cố ý thu thập thông tin cá nhân của các em. Nếu bạn cho rằng một trẻ em đã cung cấp thông tin cá nhân cho chúng tôi, vui lòng liên hệ để được hỗ trợ xử lý. Phụ huynh có thể dùng Thời gian sử dụng / Yêu cầu mua hàng của Apple, hoặc Family Link và các công cụ kiểm soát của Google Play, để quản lý giao dịch và quyền riêng tư.</p>
 
     <h2>8. Quyền của bạn</h2>
-    <p>Tùy nơi bạn sinh sống (ví dụ EU/EEA, Anh hoặc California), bạn có thể có quyền truy cập, chỉnh sửa, xóa hoặc hạn chế việc sử dụng thông tin cá nhân, phản đối một số hoạt động xử lý, và từ chối việc "bán" hoặc "chia sẻ" dữ liệu cho quảng cáo nhắm mục tiêu. Do chúng tôi không tự lưu trữ dữ liệu cá nhân của bạn, phần lớn các quyền này có thể thực hiện qua cài đặt thiết bị, tài khoản Apple và công cụ quyền riêng tư của đối tác quảng cáo. Bạn cũng có thể liên hệ chúng tôi theo thông tin bên dưới.</p>
+    <p>Tùy nơi bạn sinh sống (ví dụ EU/EEA, Anh hoặc California), bạn có thể có quyền truy cập, chỉnh sửa, xóa hoặc hạn chế việc sử dụng thông tin cá nhân, phản đối một số hoạt động xử lý, và từ chối việc "bán" hoặc "chia sẻ" dữ liệu cho quảng cáo nhắm mục tiêu. Do chúng tôi không tự lưu trữ dữ liệu cá nhân của bạn, phần lớn các quyền này có thể thực hiện qua cài đặt thiết bị, tài khoản Apple hoặc Google và công cụ quyền riêng tư của đối tác quảng cáo. Bạn cũng có thể liên hệ chúng tôi theo thông tin ở tab Hỗ trợ.</p>
 
     <h2>9. Bảo mật</h2>
-    <p>Chúng tôi dựa vào cơ chế bảo mật của nền tảng Apple đối với dữ liệu lưu trong iCloud và Game Center, đồng thời lựa chọn các đối tác quảng cáo uy tín. Không phương thức lưu trữ hay truyền tải nào an toàn tuyệt đối, vì vậy chúng tôi không thể đảm bảo an toàn 100%.</p>
+    <p>Chúng tôi dựa vào cơ chế bảo mật nền tảng của Apple và Google đối với dữ liệu lưu trong iCloud, Game Center và Google Play Games, đồng thời lựa chọn các đối tác quảng cáo uy tín. Không phương thức lưu trữ hay truyền tải nào an toàn tuyệt đối, vì vậy chúng tôi không thể đảm bảo an toàn 100%.</p>
 
     <h2>10. Xử lý dữ liệu xuyên biên giới</h2>
     <p>Các đối tác của chúng tôi có thể xử lý dữ liệu ở quốc gia khác với nơi bạn sống. Khi cần thiết, họ áp dụng các biện pháp bảo vệ như điều khoản hợp đồng tiêu chuẩn.</p>
@@ -232,6 +267,67 @@
     <h2>12. Liên hệ</h2>
     <p>Nếu có bất kỳ câu hỏi nào về Chính sách bảo mật này, vui lòng liên hệ: <a data-f="email-link" href="#">[Email]</a></p>
   </div>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SUPPORT PAGE                                                  -->
+  <!-- ============================================================ -->
+  <section id="support-page">
+
+    <!-- ===================== ENGLISH ===================== -->
+    <div lang="en">
+      <h2 style="margin-top:0;">Support for <span data-f="game">[Game Name]</span></h2>
+      <p>Need help, found a bug, or have feedback about <span data-f="game">[Game Name]</span>? We're happy to help.</p>
+      <div class="contact-box">
+        <p style="margin-bottom:4px;"><strong>Email:</strong> <a data-f="email-link" href="#">[Email]</a></p>
+        <p style="margin-bottom:0; color:var(--muted); font-size:0.9rem;">We typically reply within a few business days.</p>
+      </div>
+
+      <h3>Before you contact us</h3>
+      <ul>
+        <li>Make sure the app is updated to the latest version from the App Store or Google Play.</li>
+        <li>Try restarting the app and, if that doesn't help, restarting your device.</li>
+        <li>Check that you have a stable internet connection, since some features (leaderboards, cloud save, ads) need one.</li>
+      </ul>
+
+      <h3>Restoring purchases</h3>
+      <p>If a purchase didn't unlock correctly, open the Game's settings/store screen and use the "Restore Purchases" option, if available, or contact us with your order/transaction ID from the App Store or Google Play receipt.</p>
+
+      <h3>Reporting a bug</h3>
+      <p>Please include your device model, OS version (iOS or Android), app version, and steps to reproduce the issue so we can help faster.</p>
+
+      <h3>Privacy questions</h3>
+      <p>For questions about how your data is handled, see our <a href="javascript:void(0)" data-goto="privacy">Privacy Policy</a>.</p>
+    </div>
+
+    <!-- ===================== TIẾNG VIỆT ===================== -->
+    <div lang="vi">
+      <h2 style="margin-top:0;">Hỗ trợ cho <span data-f="game">[Game Name]</span></h2>
+      <p>Bạn cần trợ giúp, gặp lỗi, hay muốn góp ý về <span data-f="game">[Game Name]</span>? Chúng tôi luôn sẵn sàng hỗ trợ.</p>
+      <div class="contact-box">
+        <p style="margin-bottom:4px;"><strong>Email:</strong> <a data-f="email-link" href="#">[Email]</a></p>
+        <p style="margin-bottom:0; color:var(--muted); font-size:0.9rem;">Chúng tôi thường phản hồi trong vài ngày làm việc.</p>
+      </div>
+
+      <h3>Trước khi liên hệ</h3>
+      <ul>
+        <li>Đảm bảo ứng dụng đã được cập nhật lên phiên bản mới nhất từ App Store hoặc Google Play.</li>
+        <li>Thử khởi động lại ứng dụng, nếu không được hãy khởi động lại thiết bị.</li>
+        <li>Kiểm tra kết nối internet ổn định, vì một số tính năng (bảng xếp hạng, lưu đám mây, quảng cáo) cần kết nối mạng.</li>
+      </ul>
+
+      <h3>Khôi phục giao dịch mua</h3>
+      <p>Nếu một giao dịch mua không mở khóa đúng, hãy vào màn hình cài đặt/cửa hàng trong Game và dùng tùy chọn "Khôi phục giao dịch mua" (nếu có), hoặc liên hệ chúng tôi kèm mã đơn hàng/giao dịch từ biên lai App Store hoặc Google Play.</p>
+
+      <h3>Báo lỗi</h3>
+      <p>Vui lòng cung cấp kiểu thiết bị, phiên bản hệ điều hành (iOS hoặc Android), phiên bản ứng dụng và các bước để tái hiện lỗi để chúng tôi hỗ trợ nhanh hơn.</p>
+
+      <h3>Câu hỏi về quyền riêng tư</h3>
+      <p>Với các câu hỏi về cách dữ liệu của bạn được xử lý, xem <a href="javascript:void(0)" data-goto="privacy">Chính sách bảo mật</a> của chúng tôi.</p>
+    </div>
+
+  </section>
 
   </main>
 
@@ -244,7 +340,7 @@
     game: "Racing Boy: Infinite Adventure",
     dev: "Son Tran",
     email: "sonvangsss000@gmail.com",
-    date: "September 20, 2026",
+    date: "September 22, 2026",
     year: "2026",
     adNetworks: [
       { name: "Google AdMob", url: "https://policies.google.com/privacy" }
@@ -279,7 +375,19 @@
           ul.appendChild(li);
         });
       });
-      document.title = (document.documentElement.getAttribute("data-lang") === "vi" ? "Chính sách bảo mật" : "Privacy Policy") + " – " + CONFIG.game;
+      updateTitle();
+    }
+
+    function updateTitle() {
+      var lang = document.documentElement.getAttribute("data-lang");
+      var page = document.documentElement.getAttribute("data-page");
+      var pageName;
+      if (page === "support") {
+        pageName = lang === "vi" ? "Hỗ trợ" : "Support";
+      } else {
+        pageName = lang === "vi" ? "Chính sách bảo mật" : "Privacy Policy";
+      }
+      document.title = pageName + " – " + CONFIG.game;
     }
 
     function setLang(l) {
@@ -292,17 +400,43 @@
       fill();
     }
 
+    function setPage(p) {
+      document.documentElement.setAttribute("data-page", p);
+      var tabs = document.querySelectorAll(".tabs button");
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].setAttribute("aria-selected", tabs[i].getAttribute("data-page-set") === p ? "true" : "false");
+      }
+      try {
+        var url = new URL(location.href);
+        url.searchParams.set("page", p);
+        history.replaceState(null, "", url);
+      } catch (e) {}
+      window.scrollTo(0, 0);
+      updateTitle();
+    }
+
     document.querySelectorAll(".lang button").forEach(function (b) {
       b.addEventListener("click", function () { setLang(b.getAttribute("data-set")); });
     });
+    document.querySelectorAll(".tabs button").forEach(function (b) {
+      b.addEventListener("click", function () { setPage(b.getAttribute("data-page-set")); });
+    });
+    document.querySelectorAll("[data-goto]").forEach(function (b) {
+      b.addEventListener("click", function () { setPage(b.getAttribute("data-goto")); });
+    });
 
-    var initial = "en";
+    var initialLang = "en";
+    var initialPage = "privacy";
     try {
-      var q = new URLSearchParams(location.search).get("lang");
-      if (q === "vi" || q === "en") initial = q;
-      else if ((navigator.language || "").toLowerCase().indexOf("vi") === 0) initial = "vi";
+      var params = new URLSearchParams(location.search);
+      var qLang = params.get("lang");
+      if (qLang === "vi" || qLang === "en") initialLang = qLang;
+      else if ((navigator.language || "").toLowerCase().indexOf("vi") === 0) initialLang = "vi";
+      var qPage = params.get("page");
+      if (qPage === "support" || qPage === "privacy") initialPage = qPage;
     } catch (e) {}
-    setLang(initial);
+    setLang(initialLang);
+    setPage(initialPage);
   })();
 </script>
 </body>
