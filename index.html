@@ -15,8 +15,6 @@
     --line: #dde3ec;
     --accent: #2456d6;
     --accent-soft: #e6edfc;
-    --note-bg: #fff7e0;
-    --note-ink: #6b4e00;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -25,13 +23,11 @@
     :root:not([data-theme="light"]) {
       --bg: #0f1520; --surface: #171f2e; --ink: #e8edf5; --muted: #9aa6b8;
       --line: #27324a; --accent: #7fa2ff; --accent-soft: #1d2a49;
-      --note-bg: #3a2f10; --note-ink: #f2d98a;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0f1520; --surface: #171f2e; --ink: #e8edf5; --muted: #9aa6b8;
     --line: #27324a; --accent: #7fa2ff; --accent-soft: #1d2a49;
-    --note-bg: #3a2f10; --note-ink: #f2d98a;
   }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   * { box-sizing: border-box; }
@@ -73,9 +69,24 @@
   a { color: var(--accent); }
   .contact-box { background: var(--accent-soft); border-radius: 10px; padding: 18px 20px; margin: 12px 0; }
   .contact-box a { font-weight: 600; }
-  section#support-page { display: none; }
+
+  /* Game list (index page) */
+  ul.games { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 12px; }
+  ul.games li { margin: 0; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  ul.games .gname { font-weight: 600; }
+  ul.games .glinks { display: flex; gap: 16px; font-size: 0.92rem; }
+
+  /* Page switching: privacy / support / index */
+  section#support-page, section#index-page { display: none; }
   html[data-page="support"] section#privacy-page { display: none; }
   html[data-page="support"] section#support-page { display: block; }
+  html[data-page="index"] section#privacy-page { display: none; }
+  html[data-page="index"] section#index-page { display: block; }
+  html[data-page="index"] .tabs,
+  html[data-page="index"] .meta,
+  html[data-page="index"] .platform-badges { display: none; }
+
+  /* Language switching */
   body [lang="en"], body [lang="vi"] { display: none; }
   html[data-lang="en"] body [lang="en"], html[data-lang="vi"] body [lang="vi"] { display: block; }
   html[data-lang="en"] body span[lang="en"], html[data-lang="vi"] body span[lang="vi"] { display: inline; }
@@ -93,10 +104,7 @@
         <span lang="en">Last updated:</span><span lang="vi">Cập nhật lần cuối:</span>
         <span data-f="date">[Date]</span>
       </p>
-      <div class="platform-badges">
-        <span class="badge">App Store (iOS)</span>
-        <span class="badge">Google Play (Android)</span>
-      </div>
+      <div class="platform-badges" id="badges"></div>
     </div>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-set="en" aria-pressed="true">English</button>
@@ -114,6 +122,21 @@
   </nav>
 
   <main class="card">
+
+  <!-- ============================================================ -->
+  <!-- INDEX PAGE (list of games)                                    -->
+  <!-- ============================================================ -->
+  <section id="index-page">
+    <div lang="en">
+      <h2>Our games</h2>
+      <p>Choose a game to view its Privacy Policy or Support page.</p>
+    </div>
+    <div lang="vi">
+      <h2>Danh sách game</h2>
+      <p>Chọn một game để xem Chính sách bảo mật hoặc trang Hỗ trợ.</p>
+    </div>
+    <ul class="games" id="game-list"></ul>
+  </section>
 
   <!-- ============================================================ -->
   <!-- PRIVACY POLICY PAGE                                           -->
@@ -335,80 +358,156 @@
 </div>
 
 <script>
-  // ====== EDIT THESE VALUES ======
-  var CONFIG = {
-    game: "Racing Boy: Infinite Adventure",
+  // =====================================================================
+  //  CẤU HÌNH — CHỈ CẦN SỬA PHẦN NÀY
+  // =====================================================================
+
+  // Giá trị mặc định, dùng chung cho mọi game (game nào cần khác thì ghi đè trong GAMES)
+  var DEFAULTS = {
     dev: "Son Tran",
     email: "sonvangsss000@gmail.com",
-    date: "September 22, 2026",
     year: "2026",
+    platforms: ["ios", "android"],            // game chỉ có 1 nền tảng thì ghi ["ios"] hoặc ["android"]
     adNetworks: [
       { name: "Google AdMob", url: "https://policies.google.com/privacy" }
-      // { name: "Unity Ads", url: "https://unity.com/legal/privacy-policy" },
-      // { name: "AppLovin", url: "https://www.applovin.com/privacy/" },
-      // { name: "Meta Audience Network", url: "https://www.facebook.com/privacy/policy/" }
     ]
   };
-  // ================================
 
+  // Mỗi game = 1 khối. Key ("racing-boy") chính là giá trị ?game=... trên URL.
+  // Muốn thêm game mới: copy 1 khối, đổi key, name, date.
+  var GAMES = {
+    "racing-boy": {
+      name: "Racing Boy: Infinite Adventure",
+      date: "September 22, 2026"
+    },
+	"forest-runner": {
+      name: "Forest Runner: Endless Escape",
+      date: "October 10, 2026"
+    }
+
+    // , "game-moi": {
+    //     name: "Tên Game Mới",
+    //     date: "October 10, 2026",
+    //     // --- các dòng dưới là tuỳ chọn, bỏ qua thì dùng DEFAULTS ---
+    //     // email: "email-rieng@example.com",
+    //     // platforms: ["android"],
+    //     // adNetworks: [
+    //     //   { name: "Google AdMob", url: "https://policies.google.com/privacy" },
+    //     //   { name: "Unity Ads", url: "https://unity.com/legal/privacy-policy" },
+    //     //   { name: "AppLovin", url: "https://www.applovin.com/privacy/" },
+    //     //   { name: "Meta Audience Network", url: "https://www.facebook.com/privacy/policy/" }
+    //     // ]
+    //   }
+  };
+
+  // Game mở mặc định khi URL không có ?game=. Để "" nếu muốn hiện danh sách game
+  // (khi chỉ có 1 game thì luôn tự mở game đó).
+  var DEFAULT_GAME = "racing-boy";
+
+  // =====================================================================
+  //  PHẦN DƯỚI KHÔNG CẦN SỬA
+  // =====================================================================
   (function () {
+    var PLATFORM_LABELS = { ios: "App Store (iOS)", android: "Google Play (Android)" };
+    var root = document.documentElement;
+    var params = new URLSearchParams(location.search);
+    var keys = Object.keys(GAMES);
+
+    var slug = params.get("game") || DEFAULT_GAME;
+    if (!slug && keys.length === 1) slug = keys[0];
+    var G = GAMES.hasOwnProperty(slug) ? Object.assign({}, DEFAULTS, GAMES[slug]) : null;
+    if (!G) slug = "";
+
     function fill() {
-      var nodes = document.querySelectorAll("[data-f]");
-      for (var i = 0; i < nodes.length; i++) {
-        var key = nodes[i].getAttribute("data-f");
+      var info = G || DEFAULTS;
+      var vals = { game: info.name, dev: info.dev, date: info.date, year: info.year };
+      document.querySelectorAll("[data-f]").forEach(function (n) {
+        var key = n.getAttribute("data-f");
         if (key === "email-link") {
-          nodes[i].textContent = CONFIG.email;
-          nodes[i].setAttribute("href", "mailto:" + CONFIG.email);
-        } else if (CONFIG[key]) {
-          nodes[i].textContent = CONFIG[key];
+          n.textContent = info.email;
+          n.setAttribute("href", "mailto:" + info.email);
+        } else if (vals[key]) {
+          n.textContent = vals[key];
         }
-      }
-      ["en", "vi"].forEach(function (l) {
-        var ul = document.getElementById("ad-list-" + l);
-        if (!ul) return;
-        ul.innerHTML = "";
-        CONFIG.adNetworks.forEach(function (n) {
-          var li = document.createElement("li");
-          var a = document.createElement("a");
-          a.href = n.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = n.name;
-          li.appendChild(a);
-          ul.appendChild(li);
+      });
+
+      if (G) {
+        ["en", "vi"].forEach(function (l) {
+          var ul = document.getElementById("ad-list-" + l);
+          if (!ul) return;
+          ul.innerHTML = "";
+          G.adNetworks.forEach(function (n) {
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            a.href = n.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = n.name;
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
         });
+        var badges = document.getElementById("badges");
+        badges.innerHTML = "";
+        G.platforms.forEach(function (p) {
+          var s = document.createElement("span");
+          s.className = "badge";
+          s.textContent = PLATFORM_LABELS[p] || p;
+          badges.appendChild(s);
+        });
+      }
+      updateTitle();
+    }
+
+    function buildGameList() {
+      var ul = document.getElementById("game-list");
+      ul.innerHTML = "";
+      keys.forEach(function (k) {
+        var g = GAMES[k];
+        var li = document.createElement("li");
+        li.innerHTML =
+          '<span class="gname"></span>' +
+          '<span class="glinks">' +
+          '<a class="lp"><span lang="en">Privacy Policy</span><span lang="vi">Chính sách bảo mật</span></a>' +
+          '<a class="ls"><span lang="en">Support</span><span lang="vi">Hỗ trợ</span></a>' +
+          '</span>';
+        li.querySelector(".gname").textContent = g.name;
+        li.querySelector(".lp").href = "?game=" + encodeURIComponent(k) + "&page=privacy";
+        li.querySelector(".ls").href = "?game=" + encodeURIComponent(k) + "&page=support";
+        ul.appendChild(li);
+      });
+    }
+
+    function updateTitle() {
+      var lang = root.getAttribute("data-lang");
+      var page = root.getAttribute("data-page");
+      if (page === "index" || !G) {
+        document.title = (lang === "vi" ? "Chính sách bảo mật & Hỗ trợ" : "Privacy Policy & Support") + " – " + DEFAULTS.dev;
+        return;
+      }
+      var pageName = page === "support"
+        ? (lang === "vi" ? "Hỗ trợ" : "Support")
+        : (lang === "vi" ? "Chính sách bảo mật" : "Privacy Policy");
+      document.title = pageName + " – " + G.name;
+    }
+
+    function setLang(l) {
+      root.setAttribute("data-lang", l);
+      root.setAttribute("lang", l);
+      document.querySelectorAll(".lang button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-set") === l ? "true" : "false");
       });
       updateTitle();
     }
 
-    function updateTitle() {
-      var lang = document.documentElement.getAttribute("data-lang");
-      var page = document.documentElement.getAttribute("data-page");
-      var pageName;
-      if (page === "support") {
-        pageName = lang === "vi" ? "Hỗ trợ" : "Support";
-      } else {
-        pageName = lang === "vi" ? "Chính sách bảo mật" : "Privacy Policy";
-      }
-      document.title = pageName + " – " + CONFIG.game;
-    }
-
-    function setLang(l) {
-      document.documentElement.setAttribute("data-lang", l);
-      document.documentElement.setAttribute("lang", l);
-      var btns = document.querySelectorAll(".lang button");
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-set") === l ? "true" : "false");
-      }
-      fill();
-    }
-
-    function setPage(p) {
-      document.documentElement.setAttribute("data-page", p);
-      var tabs = document.querySelectorAll(".tabs button");
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].setAttribute("aria-selected", tabs[i].getAttribute("data-page-set") === p ? "true" : "false");
-      }
+    function setPage(p, push) {
+      if (!G) p = "index";
+      root.setAttribute("data-page", p);
+      document.querySelectorAll(".tabs button").forEach(function (t) {
+        t.setAttribute("aria-selected", t.getAttribute("data-page-set") === p ? "true" : "false");
+      });
       try {
         var url = new URL(location.href);
-        url.searchParams.set("page", p);
+        if (slug) url.searchParams.set("game", slug);
+        if (p === "index") url.searchParams.delete("page");
+        else url.searchParams.set("page", p);
         history.replaceState(null, "", url);
       } catch (e) {}
       window.scrollTo(0, 0);
@@ -426,15 +525,15 @@
     });
 
     var initialLang = "en";
-    var initialPage = "privacy";
-    try {
-      var params = new URLSearchParams(location.search);
-      var qLang = params.get("lang");
-      if (qLang === "vi" || qLang === "en") initialLang = qLang;
-      else if ((navigator.language || "").toLowerCase().indexOf("vi") === 0) initialLang = "vi";
-      var qPage = params.get("page");
-      if (qPage === "support" || qPage === "privacy") initialPage = qPage;
-    } catch (e) {}
+    var qLang = params.get("lang");
+    if (qLang === "vi" || qLang === "en") initialLang = qLang;
+    else if ((navigator.language || "").toLowerCase().indexOf("vi") === 0) initialLang = "vi";
+
+    var qPage = params.get("page");
+    var initialPage = (qPage === "support" || qPage === "privacy") ? qPage : "privacy";
+
+    buildGameList();
+    fill();
     setLang(initialLang);
     setPage(initialPage);
   })();
